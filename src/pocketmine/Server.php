@@ -367,8 +367,7 @@ class Server{
 	 * @return string
 	 */
 	public function getVersion(){
-		$version = implode(",",ProtocolInfo::MINECRAFT_VERSION);
-		return $version;
+		return ProtocolInfo::MINECRAFT_VERSION;
 	}
 
 	/**
@@ -376,21 +375,6 @@ class Server{
 	 */
 	public function getApiVersion(){
 		return \pocketmine\API_VERSION;
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getiTXApiVersion(){
-		return \pocketmine\GENISYS_API_VERSION;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getGeniApiVersion(){
-		return \pocketmine\GENISYS_API_VERSION;
 	}
 
 	/**
