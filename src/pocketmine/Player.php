@@ -32,7 +32,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Animal;
 use pocketmine\entity\Arrow;
-use pocketmine\entity\Attribute;
+use pocketmine\entity\Attribute;//deepEquals
 use pocketmine\entity\Boat;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EnderPearl;
@@ -2439,7 +2439,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 				 * Changing hotbar slot mapping at will has been deprecated because it causes far too many
 				 * issues with Windows 10 Edition Beta.
 				 */
-				$this->inventory->setHeldItemIndex($packet->hotbarSlot, false, $packet->inventorySlot);
+			$this->inventory->setHeldItemIndex($packet->selectedSlot, false, $packet->slot);
 
 				$this->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_ACTION, false);
 				break;
@@ -2452,7 +2452,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 
 				$this->craftingType = self::CRAFTING_SMALL;
 
-				if($packet->face >= 0 and $packet->face <= 5){ //Use Block, place
+				if($packet->face >= 0 and $packet->face <= 5){ //Use Block, place deepEquals
 					$this->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_ACTION, false);
 
 					if(!$this->canInteract($blockVector->add(0.5, 0.5, 0.5), 13) or $this->isSpectator()){
@@ -2462,13 +2462,13 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 						if($this->level->useItemOn($blockVector, $item, $packet->face, $packet->fx, $packet->fy, $packet->fz, $this) === true){
 							break;
 						}
-					}elseif(!$this->inventory->getItemInHand()->deepEquals($packet->item)){
+					}elseif(!$this->inventory->getItemInHand()->Equals($packet->item)){
 						$this->inventory->sendHeldItem($this);
 					}else{
 						$item = $this->inventory->getItemInHand();
 						$oldItem = clone $item;
 						if($this->level->useItemOn($blockVector, $item, $packet->face, $packet->fx, $packet->fy, $packet->fz, $this)){
-							if(!$item->deepEquals($oldItem) or $item->getCount() !== $oldItem->getCount()){
+							if(!$item->Equals($oldItem) or $item->getCount() !== $oldItem->getCount()){
 								$this->inventory->setItemInHand($item);
 								$this->inventory->sendHeldItem($this->hasSpawned);
 							}
@@ -2491,7 +2491,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 
 					if($this->isCreative()){
 						$item = $this->inventory->getItemInHand();
-					}elseif(!$this->inventory->getItemInHand()->deepEquals($packet->item)){
+					}elseif(!$this->inventory->getItemInHand()->Equals($packet->item)){
 						$this->inventory->sendHeldItem($this);
 						break;
 					}else{
@@ -3310,10 +3310,9 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 					$ingredients = $packet->input;
 					$result = $packet->output[0];
 
-					if(!$canCraft or !$recipe->getResult()->deepEquals($result)){
+					if(!$canCraft or !$recipe->getResult()->Equals($result)){
 						$this->server->getLogger()->debug("Unmatched recipe " . $recipe->getId() . " from player " . $this->getName() . ": expected " . $recipe->getResult() . ", got " . $result . ", using: " . implode(", ", $ingredients));
-						$this->inventory->sendContents($this);
-						break;
+						$this->inventory->sendContents($this);//deepEquals
 					}
 
 					$used = array_fill(0, $this->inventory->getSize(), 0);
@@ -3321,7 +3320,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 					foreach($ingredients as $ingredient){
 						$slot = -1;
 						foreach($this->inventory->getContents() as $index => $item){
-							if($ingredient->getId() !== 0 and $ingredient->deepEquals($item, !$ingredient->hasAnyDamageValue(), $ingredient->hasCompoundTag()) and ($item->getCount() - $used[$index]) >= 1){
+							if($ingredient->getId() !== 0 and $ingredient->Equals($item, !$ingredient->hasAnyDamageValue(), $ingredient->hasCompoundTag()) and ($item->getCount() - $used[$index]) >= 1){
 								$slot = $index;
 								$used[$index]++;
 								break;
