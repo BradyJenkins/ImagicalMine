@@ -1,39 +1,41 @@
-<?php 
+<?php
 
 /*
  *
- *    _______                                _
- *   |__   __|                              | |
- *      | | ___  ___ ___  ___ _ __ __ _  ___| |_
- *      | |/ _ \/ __/ __|/ _ \  __/ _` |/ __| __|
- *      | |  __/\__ \__ \  __/ | | (_| | (__| |_
- *      |_|\___||___/___/\___|_|  \__,_|\___|\__|
- *
+ *  _____            _               _____           
+ * / ____|          (_)             |  __ \          
+ *| |  __  ___ _ __  _ ___ _   _ ___| |__) | __ ___  
+ *| | |_ |/ _ \ '_ \| / __| | | / __|  ___/ '__/ _ \ 
+ *| |__| |  __/ | | | \__ \ |_| \__ \ |   | | | (_) |
+ * \_____|\___|_| |_|_|___/\__, |___/_|   |_|  \___/ 
+ *                         __/ |                    
+ *                        |___/                     
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * @author Tesseract Team
- * @link http://www.github.com/TesseractTeam/Tesseract
- * 
+ * @author GenisysPro
+ * @link https://github.com/GenisysPro/GenisysPro
  *
- */
+ *
+*/
 
 namespace pocketmine\command\defaults;
 
 use pocketmine\network\protocol\TransferPacket;
 use pocketmine\command\CommandSender;
-use pocketmine\{Player, Server};
+use pocketmine\Player;
+use pocketmine\Server;
 
 class TransferCommand extends VanillaCommand{
 	
 	public function __construct($name){
 		parent::__construct(
 			$name,
-			"%pocketmine.command.transfer.description",
-			"%pocketmine.command.transfer.usage",
+			"将玩家传送至另一个服务器",
+			"/transfer <player玩家> <address地址> [port端口]",
 			["transfer"]
 		);
 		$this->setPermission("pocketmine.command.transfer");
@@ -49,20 +51,23 @@ class TransferCommand extends VanillaCommand{
 			}
 
 			if(count($args) <= 0){
-				$sender->sendMessage("Usage: /transferserver <address> [port]");
+				$sender->sendMessage("Usage: /transfer <address> [port]");
 				return false;
 			}
 
 			$address = strtolower($args[0]);
 			$port = (isset($args[1]) && is_numeric($args[1]) ? $args[1] : 19132);
 
-			$sender->transfer($address, $port);
+			$pk = new TransferPacket();
+			$pk->address = $address;
+			$pk->port = $port;
+			$sender->dataPacket($pk);
 
 			return false;
 		}
 
 		if(count($args) <= 1){
-			$sender->sendMessage("Usage: /transferserver <player> <address> [port]");
+			$sender->sendMessage("Usage: /transfer <player> <address> [port]");
 			return false;
 		}
 
@@ -73,9 +78,13 @@ class TransferCommand extends VanillaCommand{
 
 		$address = strtolower($args[1]);
 		$port = (isset($args[2]) && is_numeric($args[2]) ? $args[2] : 19132);
-		
+
 		$sender->sendMessage("Sending ".$player->getName()." to ".$address.":".$port);
 
-		$player->transfer($address, $port);
+		$pk = new TransferPacket();
+		$pk->address = $address;
+		$pk->port = $port;
+		$player->dataPacket($pk);
 	}
+
 }

@@ -1,8 +1,33 @@
 <?php
+
+/*
+ *
+ *  _____            _               _____           
+ * / ____|          (_)             |  __ \          
+ *| |  __  ___ _ __  _ ___ _   _ ___| |__) | __ ___  
+ *| | |_ |/ _ \ '_ \| / __| | | / __|  ___/ '__/ _ \ 
+ *| |__| |  __/ | | | \__ \ |_| \__ \ |   | | | (_) |
+ * \_____|\___|_| |_|_|___/\__, |___/_|   |_|  \___/ 
+ *                         __/ |                    
+ *                        |___/                     
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * @author GenisysPro
+ * @link https://github.com/GenisysPro/GenisysPro
+ *
+ *
+*/
+
 namespace pocketmine\command\defaults;
 
 use pocketmine\command\CommandSender;
+use pocketmine\plugin\Plugin;
 use pocketmine\Server;
+use pocketmine\utils\TextFormat;
 use pocketmine\network\protocol\Info;
 
 class MakeServerCommand extends VanillaCommand{
@@ -10,19 +35,19 @@ class MakeServerCommand extends VanillaCommand{
 	public function __construct($name){
 		parent::__construct(
 			$name,
-			"%tesseract.command.makeserver.description",
-			"%tesseract.command.makeserver.usage"
+			"Creates a PocketMine Phar",
+			"/makeserver"
 		);
-		$this->setPermission("tesseract.command.makeserver");
+		$this->setPermission("pocketmine.command.makeserver");
 	}
-
+	
 	public function execute(CommandSender $sender, $commandLabel, array $args){
 		if(!$this->testPermission($sender)){
 			return false;
 		}
 
 		$server = $sender->getServer();
-		$pharPath = Server::getInstance()->getPluginPath() . DIRECTORY_SEPARATOR . "Tesseract" . DIRECTORY_SEPARATOR . $server->getName() . "_" . $server->getPocketMineVersion() . ".phar";
+		$pharPath = Server::getInstance()->getPluginPath().DIRECTORY_SEPARATOR . "GenisysPro" . DIRECTORY_SEPARATOR . $server->getName()."_".$server->getPocketMineVersion().".phar";
 		if(file_exists($pharPath)){
 			$sender->sendMessage("Phar file already exists, overwriting...");
 			@unlink($pharPath);
@@ -48,7 +73,7 @@ class MakeServerCommand extends VanillaCommand{
 				continue;
 			}
 			$phar->addFile($file, $path);
-			$sender->sendMessage("[Tesseract] Adding $path");
+			$sender->sendMessage("[GenisysPro] Adding $path");
 		}
 		foreach($phar as $file => $finfo){
 			/** @var \PharFileInfo $finfo */
@@ -56,12 +81,20 @@ class MakeServerCommand extends VanillaCommand{
 				$finfo->compress(\Phar::GZ);
 			}
 		}
-		if(!isset($args[0]) or (isset($args[0]) and $args[0] != "nogz")){
-			$phar->compressFiles(\Phar::GZ);
-		}
 		$phar->stopBuffering();
 
-		$sender->sendMessage($server->getName() . " " . $server->getPocketMineVersion() . " Phar file has been created on " . $pharPath);
+	 $license = "
+  _____            _               _____           
+ / ____|          (_)             |  __ \          
+| |  __  ___ _ __  _ ___ _   _ ___| |__) | __ ___  
+| | |_ |/ _ \ '_ \| / __| | | / __|  ___/ '__/ _ \ 
+| |__| |  __/ | | | \__ \ |_| \__ \ |   | | | (_) |
+ \_____|\___|_| |_|_|___/\__, |___/_|   |_|  \___/ 
+                         __/ |                    
+                        |___/         
+ ";
+		$sender->sendMessage($license);
+		$sender->sendMessage($server->getName() . " " . $server->getPocketMineVersion() . " Phar file has been created on ".$pharPath);
 
 		return true;
 	}
