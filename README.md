@@ -1,7 +1,7 @@
 # ![ImagicalMine](http://i.imgur.com/6Hlm8mn.gif)
 
 
-[![CircleCI](https://circleci.com/gh/caspervanneck/ImagicalMine/tree/master.svg?style=svg)](https://circleci.com/gh/caspervanneck/ImagicalMine/tree/master)<=download link (github login needed)
+[![CircleCI](https://circleci.com/gh/ImagicalMine-MP/ImagicalMine.svg?style=svg)](https://circleci.com/gh/ImagicalMine-MP/ImagicalMine)<=download link (github login needed)
 
 
 ## Acknowledgements
@@ -19,6 +19,8 @@
 ## Demo Server
 
 Below is the ImagicalMine demo server details, you can see what features ImagicalMine has before downloading it.<br>
+* warning this server is not 24 7 online
+
 **IP: nightcorepe.tk**<br>
 **Port: 19132**
 
@@ -28,18 +30,6 @@ Below is the ImagicalMine demo server details, you can see what features Imagica
 Documentation for installing ImagicalMine is available [here](https://github.com/ImagicalMine/ImagicalMine/wiki/Installation).<br>
 Supported platforms: Linux, Windows, OS X, Raspberry Pi, and ODROID
 
-**Installation on a Hosting Company:**<br>
-You need to request the hosting company you're using to add in ImagicalMine as a server JAR/PHAR. If they don't respond, or don't add it, then you can try the MCPE hosting providers listed as below that support ImagicalMine as a version for their customers to download.
-
-* __[HostingItAll](http://hostingitall.com)__
-* __[MinersPlanet](http://minersplanet.com)__
-* __[HK-Hosting GbR](https://hk-hosting.de)__
-* __[Virtual Gladiators](http://virtualgladiators.com)__
-* __[NetherBox](https://netherbox.com/?promo=IMAGICAL)__
-* __[ExtraVM](https://www.extravm.com/minecraft.html)__
-* __[24serv.pro](https://24serv.pro)__ 
-* __[ServerWays Hosting](https://serverwayshosting.com)__
-
 ## Resources
 
 **Guides**
@@ -48,11 +38,8 @@ You need to request the hosting company you're using to add in ImagicalMine as a
 * __[Contributing Guidelines](https://github.com/ImagicalCorp/ImagicalMine/blob/master//.github/CONTRIBUTING.md)__
 
 **External Links**
-* __[Homepage](http://imagicalmine.net/)__
-* __[Forums](http://forums.imagicalmine.net/)__
-* __[Gitter chat](https://gitter.im/ImagicalCorp/ImagicalMine)__
-* __[Plugin Repository](http://forums.imagicalmine.net/plugins)__
-* __[Official Twitter Account](https://twitter.com/ImagicalCorp)__
+* __[Gitter chat](https://gitter.im/ImagicalMine-MP-mcpe/Lobby)__
+* __[Plugin Repository](https://poggit.pmmp.io/review)__
 
 ## Third-party libraries and protocols used
 

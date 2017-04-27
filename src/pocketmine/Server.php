@@ -290,6 +290,7 @@ class Server{
 	public $countBookshelf = false;
 	public $allowInventoryCheats = false;
 	public $folderpluginloader = true;
+	public $resourceEnabled = false;
 	
 	/**
 	 *
@@ -1492,6 +1493,7 @@ class Server{
 
 		$this->allowInventoryCheats = $this->getAdvancedProperty("inventory.allow-cheats", false);
 		$this->folderpluginloader = $this->getAdvancedProperty("developer.folder-plugin-loader", true);
+		$this->resourceEnabled = $this->getAdvancedProperty("server.enable-resource", false);
 
 	}
 	
@@ -1639,10 +1641,10 @@ class Server{
 
 			$onlineMode = $this->getConfigBoolean("online-mode", false);
 			if(!extension_loaded("openssl")){
-				$this->logger->warning("OpenSSL is needed ).");
+				$this->logger->warning("OpenSSL is needed for online mode and more).");
 				$this->setConfigBool("online-mode", false);
 			}elseif(!$onlineMode){
-				$this->logger->warning("runing on offline mode can be a danger!");
+				$this->logger->warning("runing on offline mode can be a danger and fun for hackers!");
 			}
 
 			$this->forceLanguage = $this->getProperty("settings.force-language", false);
@@ -1752,8 +1754,9 @@ class Server{
 			Color::init();
 			$this->craftingManager = new CraftingManager();
 
-			$this->resourceManager = new ResourcePackManager($this, $this->getDataPath() . "resource_packs" . DIRECTORY_SEPARATOR);
-
+	if($this->resourceEnabled){
+    $this->resourceManager = new ResourcePackManager($this, \pocketmine\PATH . "resource_packs" . DIRECTORY_SEPARATOR);
+ 			}
 			$this->pluginManager = new PluginManager($this, $this->commandMap);
 			$this->pluginManager->subscribeToPermission(Server::BROADCAST_CHANNEL_ADMINISTRATIVE, $this->consoleSender);
 			$this->pluginManager->setUseTimings($this->getProperty("settings.enable-profiling", false));
